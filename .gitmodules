@@ -1,0 +1,3 @@
+[submodule "logics"]
+	path = logics
+	url = git@bitbucket.org:viur/logics.git
