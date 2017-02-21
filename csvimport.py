@@ -65,6 +65,14 @@ class Importer(requests.Session):
 
 		return req.json()
 
+	def logic_lookup(self, module, field, value, result = "key"):
+		ret = self.list(module, **{field: value, "amount": 1})
+
+		if ret["skellist"]:
+			return ret["skellist"][0][result]
+
+		return None
+
 if __name__ == "__main__":
 	ap = argparse.ArgumentParser(description="csv2viur - Generic CSV importer for ViUR.")
 
@@ -96,7 +104,11 @@ if __name__ == "__main__":
 
 	added = 0
 	updated = 0
-	vil = None
+
+	vil = logics.Interpreter()
+	#vil.functions["lookup"] = logics.Function(imp.logic_lookup, None)
+	#vil.functions["csvlookup"] = logics.Function(imp.logic_lookup, None)
+
 	rules = {}
 
 	for row in reader:
@@ -124,9 +136,6 @@ if __name__ == "__main__":
 			for i, rule in enumerate(args.rule):
 				#print(rule[0], rule[1], row.get(rule[0]))
 				field = rule[0]
-
-				if vil is None:
-					vil = logics.Interpreter()
 
 				if field not in rules:
 					rules[(field, i)] = vil.compile(rule[1])
