@@ -1,13 +1,15 @@
 #!/bin/sh
+TMPDIR=/tmp
+DBDIR=$HOME/DB
 
-cd /tmp
+cd $TMPDIR
 if [ $? -ne 0 ]
 then
 	echo "No /tmp directory??"
 	exit 1
 fi
 
-if [ ! -d $HOME/DB ]
+if [ ! -d $DBDIR ]
 then
 	echo "No DB directory in $HOME found."
 	exit 1
@@ -50,10 +52,16 @@ do
 
 	if [ -z "$nchoice" ]
 	then
-		echo -n "Copy '$sel' into $HOME/DB/$selname/..."
-		rsync -a --delete $sel $HOME/DB/$selname/
-		echo "Done"
+		echo -n "Saving '$sel' into $HOME/DB/$selname.tar.gz ..."
 
+		tar cfz $DBDIR/$selname.tar.gz $sel
+		if [ $? -ne 0 ]
+		then
+			echo "Failed"
+			exit 1
+		fi
+
+		echo "Done"
 		break
 	fi
 

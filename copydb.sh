@@ -1,6 +1,8 @@
 #!/bin/sh
+TMPDIR=/tmp
+DBDIR=$HOME/DB
 
-cd $HOME/DB
+cd $DBDIR
 if [ $? -ne 0 ]
 then
 	echo "No DB directory in $HOME found."
@@ -8,7 +10,7 @@ then
 fi
 
 choice=0
-dirlist=`ls -dt1 */ | sed -e 's/\/$//g'`
+dirlist=`ls *.tar.gz | sed -e 's/\.tar\.gz$//g'`
 
 while true
 do
@@ -43,10 +45,43 @@ do
 	then
 		b=`basename $sel`
 
-		echo -n "Copy '$sel' into 'appengine.$b.`whoami`'..."
-		rsync -a --delete $sel/ /tmp/appengine.$b.`whoami`/
-		echo "Done"
+		targetdir="$TMPDIR/appengine.$b.`whoami`"
 
+		if [ -d "$targetdir" ]
+		then
+			echo -n "$targetdir already exists, deleting..."
+
+			rm -rf "$targetdir"
+			if [ $? -ne 0 ]
+			then
+				echo "Error deleting directory"
+				exit 1
+			fi
+
+			echo "Done"
+		fi
+
+		echo -n "Unpacking '$sel' into '$targetdir'..."
+
+		mkdir $targetdir
+		if [ $? -ne 0 ]
+		then
+			echo "Error creating directory"
+			exit 1
+		fi
+
+		chmod 700 $targetdir
+
+		#rsync -a --delete $sel/ /tmp/appengine.$b.`whoami`/
+		tar xfz $sel.tar.gz --strip-components=1 -C $targetdir
+
+		if [ $? -ne 0 ]
+		then
+			echo "Error unpacking"
+			exit 1
+		fi
+
+		echo "Done"
 		break
 	fi
 
