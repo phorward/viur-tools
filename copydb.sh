@@ -10,7 +10,7 @@ then
 fi
 
 choice=0
-dirlist=`ls *.tar.gz | sed -e 's/\.tar\.gz$//g'`
+dirlist=`ls -t *.tar.gz | sed -e 's/\.tar\.gz$//g'`
 
 while true
 do

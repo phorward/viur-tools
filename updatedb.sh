@@ -32,7 +32,7 @@ do
 		if [ $cnt -eq $choice ]
 		then
 			printf "> %2d %s\n" $cnt $name
-			sel=$i
+			sel=${i%/}
 			selname=$name
 		else
 			printf "  %2d %s\n" $cnt $name
@@ -54,7 +54,10 @@ do
 	then
 		echo -n "Saving '$sel' into $HOME/DB/$selname.tar.gz ..."
 
-		tar cfz $DBDIR/$selname.tar.gz $sel
+		ln -s $sel storage
+		tar cfhz $DBDIR/$selname.tar.gz storage
+		rm storage
+
 		if [ $? -ne 0 ]
 		then
 			echo "Failed"
