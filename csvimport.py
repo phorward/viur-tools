@@ -121,7 +121,7 @@ if __name__ == "__main__":
 	if not args.module:
 		args.module = os.path.splitext(args.filename)[0]
 
-	reader = csv.DictReader(open(args.filename, "rb"), delimiter=args.delimiter)
+	reader = csv.DictReader(open(args.filename, "r"), delimiter=args.delimiter)
 
 	added = 0
 	updated = 0
