@@ -18,13 +18,13 @@ lookup = {
 if __name__ == "__main__":
     # Get arguments
     ap = argparse.ArgumentParser(
-        description="Flare source code porting tool"
+        description="ViUR2-to-ViUR3 porting tool"
     )
 
     ap.add_argument(
         "project_root",
         type=str,
-        help="Flare project root"
+        help="ViUR project root"
     )
 
     ap.add_argument(
