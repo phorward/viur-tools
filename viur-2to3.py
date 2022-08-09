@@ -15,6 +15,37 @@ lookup = {
     "from server import": "from viur.core import"
 }
 
+bones = [
+    "base",
+    "boolean",
+    "captcha",
+    "color",
+    "credential",
+    "date",
+    "email",
+    "file",
+    "key",
+    "numeric",
+    "password",
+    "randomslice",
+    "raw",
+    "record",
+    "relational",
+    "selectcountry",
+    "select",
+    "sortindex",
+    "spatial",
+    "string",
+    "text",
+    "treeleaf",
+    "treenode",
+    "user"
+]
+
+lookup.update({
+    f"{name}Bone": f"{name[0].upper()}{name[1:]}Bone" for name in bones
+})
+
 if __name__ == "__main__":
     # Get arguments
     ap = argparse.ArgumentParser(
